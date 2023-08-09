@@ -35,7 +35,7 @@ function UploadFile {
     )
     
     Write-Output "Uploading file to Azure from $filePath"
-    azcopy cp "$filePath" "$SAS_URL"
+    & "$env:USERPROFILE\AppData\Local\Programs\AZCopy\azcopy.exe" cp "$filePath" "$SAS_URL"
 }
 
 # Handle the base "FILE" variable if it exists
