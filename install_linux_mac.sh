@@ -22,6 +22,11 @@ chmod +x azure_upload_linux_mac.sh
 
 # Download the .env example
 curl -sS -O https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/.env.example
+if [ ! -f .env ]; then
+    mv .env.example .env
+else
+    echo ".env already exists. Not overwriting."
+fi
 
 echo "Please edit the .env file in the $APP_FOLDER folder to configure the script for uploads."
 echo "We provided an example .env file (.env.example) for you to use as a starting point."
