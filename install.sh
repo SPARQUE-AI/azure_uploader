@@ -4,7 +4,7 @@
 # Variables
 APP_FOLDER="azure_uploader"
 
-cd ~
+cd "$HOME"
 
 # Create application folder
 if [ ! -d "$APP_FOLDER" ]
