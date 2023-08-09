@@ -10,7 +10,7 @@ if (-not (Test-Path -Path $APP_FOLDER)) {
 Set-Location -Path $APP_FOLDER
 
 # Download the azure uploader script
-Invoke-WebRequest -Uri "https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/azure_upload_linux_mac.sh" -OutFile "azure_upload_linux_mac.sh"
+Invoke-WebRequest -Uri "https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/azure_upload_windows.ps1" -OutFile "azure_upload_windows.ps1"
 
 # Download the .env example
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/.env.example" -OutFile ".env.example"
@@ -20,4 +20,4 @@ Write-Output "We provided an example .env file (.env.example) for you to use as 
 Write-Output "Make a new .env file or rename this file to .env and edit it."
 Write-Output "After that, run the script with the following command:"
 Write-Output
-Write-Output ".\azure_upload_linux_mac.ps1"
+Write-Output ".\azure_upload_windows.ps1"
