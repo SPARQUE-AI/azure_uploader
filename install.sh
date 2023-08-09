@@ -16,13 +16,13 @@ fi
 cd "$APP_FOLDER"
 
 # Download the azure uploader script
-wget https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/azure_upload_linux_mac.sh
+curl -sS https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/azure_upload_linux_mac.sh
 
 # Set permissions
 chmod +x azure_upload_linux_mac.sh
 
 # Download the .env example
-wget https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/.env.example
+curl -sS https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/.env.example
 mv .env.example .env
 
 echo "Please edit the .env file in the $APP_FOLDER folder to configure the script for uploads."
