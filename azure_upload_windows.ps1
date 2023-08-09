@@ -2,8 +2,9 @@ $APP_FOLDER = "$HOME\azure_uploader"
 $os_name = Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption
 
 # Install dependencies
-if (-not (Get-Command azcopy -ErrorAction SilentlyContinue)) {
-    Invoke-WebRequest -Uri "https://aka.ms/downloadazcopy-v10-windows" -OutFile AzCopy.zip -UseBasicParsing
+# Check for azcopy.exe file
+if (-not (Test-Path ~\AppData\Local\Programs\AZCopy\azcopy.exe)) {
+     Invoke-WebRequest -Uri "https://aka.ms/downloadazcopy-v10-windows" -OutFile AzCopy.zip -UseBasicParsing
     Expand-Archive ./AzCopy.zip ./AzCopy -Force
 
     # Move AzCopy
