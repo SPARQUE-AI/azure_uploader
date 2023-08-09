@@ -5,18 +5,7 @@ os_name=$(uname)
 # Install dependencies
 if [ "$os_name" = "Linux" ]; then
     if ! [ -x "$(command -v azcopy)" ]; then
-        # Download and extract
-        curl -sS -O https://aka.ms/downloadazcopy-v10-linux
-        tar -xvf downloadazcopy-v10-linux
-
-        # Move AzCopy
-        sudo rm -f /usr/bin/azcopy
-        sudo cp ./azcopy_linux_amd64_*/azcopy /usr/bin/
-        sudo chmod 755 /usr/bin/azcopy
-
-        # Clean the kitchen
-        rm -f downloadazcopy-v10-linux
-        rm -rf ./azcopy_linux_amd64_*/
+        sudo bash -c 'cd /usr/local/bin; curl -L https://aka.ms/downloadazcopy-v10-linux | tar --strip-components=1 --exclude=*.txt -xzvf -; chmod +x azcopy'
     fi
 elif [ "$os_name" = "Darwin" ]; then
     if ! [ -x "$(command -v azcopy)" ]; then
