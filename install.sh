@@ -3,7 +3,6 @@
 
 # Variables
 APP_FOLDER="azure_uploader"
-
 cd "$HOME"
 
 # Create application folder
