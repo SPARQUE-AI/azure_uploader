@@ -14,7 +14,7 @@ elif [ "$os_name" = "Darwin" ]; then
 fi
 
 # Pull in variables from .env file in the same folder as this script
-source .env
+source "$PWD/.env"
 
 # Validate variables
 if [ -z "$SAS_URL" ]; then
