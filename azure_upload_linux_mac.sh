@@ -6,7 +6,7 @@ os_name=$(uname)
 if [ "$os_name" = "Linux" ]; then
     if ! [ -x "$(command -v azcopy)" ]; then
         # Download and extract
-        wget https://aka.ms/downloadazcopy-v10-linux
+        curl -sS -O https://aka.ms/downloadazcopy-v10-linux
         tar -xvf downloadazcopy-v10-linux
 
         # Move AzCopy
