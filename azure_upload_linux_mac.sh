@@ -18,20 +18,24 @@ source "./.env"
 
 # Validate variables
 if [ -z "$SAS_URL" ]; then
-    echo "SAS_URL is not set in the .env file. Please set it to the full SAS URL and run the script again"
+    echo "SAS_URL is not set in the .env file. Please set it to the SAS URL and run the script again"
     exit 1
 fi
+
+if [ -z "$SAS_TOKEN" ]; then
+    echo "SAS_TOKEN is not set in the .env file. Please set it to the SAS TOKEN and run the script again"
+    exit 1
+fi
+
+echo "SAS_URL is set to $SAS_URL"
+echo "SAS_TOKEN is set to $SAS_TOKEN"
 
 uploadFile() 
 {
     filePath=$1
     folderName=$2
     echo "Uploading file to Azure from $filePath"
-    if [ ! -z "$folderPath" ]; then
-        destination="$SAS_URL/$folderPath"
-    else
-        destination="$SAS_URL"
-    fi
+    destination="$SAS_URL/$folderName/$(basename $filePath)?$SAS_TOKEN"
     echo "Destination: $destination"
     azcopy cp "$filePath" "$destination"
 }
@@ -48,7 +52,7 @@ while [ "$index" -le 100 ]; do
         continue
     fi
 
-    uploadFile "$file" "$folder_name"
+    uploadFile "$file" "$folder"
 
     index=$((index + 1))
 done

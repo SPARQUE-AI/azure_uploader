@@ -25,7 +25,12 @@ if (-not (Test-Path ~\AppData\Local\Programs\AZCopy\azcopy.exe)) {
 
 # Validate variables
 if (-not $SAS_URL) {
-    Write-Output "SAS_URL is not set in the .env file. Please set it to the full SAS URL and run the script again"
+    Write-Output "SAS_URL is not set in the .env file. Please set it to the SAS URL and run the script again"
+    exit
+}
+
+if (-not $SAS_TOKEN) {
+    Write-Output "SAS_TOKEN is not set in the .env file. Please set it to the SAS TOKEN and run the script again"
     exit
 }
 
@@ -39,16 +44,19 @@ function UploadFile {
     )
 
     Write-Output "Uploading file to Azure from $filePath"
+    
+    $fileName = [System.IO.Path]::GetFileName($filePath)
 
-    $destination = if (-not [string]::IsNullOrEmpty($folderName)) {
-        "$env:SAS_URL/$folderName"
+    if (-not [string]::IsNullOrEmpty($folderName)) {
+        $destination = "$env:SAS_URL/$folderName/$fileName`?$env:SAS_TOKEN"
     } else {
-        "$env:SAS_URL"
+        $destination = "$env:SAS_URL/$fileName`?$env:SAS_TOKEN"
     }
 
     Write-Output "Destination: $destination"
     azcopy cp $filePath $destination
 }
+
 
 for ($index=1; $index -le 100; $index++) {
     $fileVariableName = "FILE_UPLOAD_PATH_$index"
