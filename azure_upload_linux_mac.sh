@@ -1,6 +1,5 @@
 # #!/bin/bash
 
-APP_FOLDER="$HOME/azure_uploader"
 os_name=$(uname)
 
 # Install dependencies
@@ -15,7 +14,7 @@ elif [ "$os_name" = "Darwin" ]; then
 fi
 
 # Pull in variables from .env file in the same folder as this script
-source "$APP_FOLDER/.env"
+source "./.env"
 
 # Validate variables
 if [ -z "$SAS_URL" ]; then
@@ -26,26 +25,30 @@ fi
 uploadFile() 
 {
     filePath=$1
+    folderName=$2
     echo "Uploading file to Azure from $filePath"
-    azcopy cp "$filePath" "$SAS_URL"
+    if [ ! -z "$folderPath" ]; then
+        destination="$SAS_URL/$folderPath"
+    else
+        destination="$SAS_URL"
+    fi
+    echo "Destination: $destination"
+    azcopy cp "$filePath" "$destination"
 }
 
-# Handle the base "FILE" variable if it exists
-if [ -n "$FILE_UPLOAD_PATH" ]; then
-    uploadFile "$FILE_UPLOAD_PATH"
-fi
-
-index=0
-while [ "$index" -le 10 ]; do
-    var_name="FILE_UPLOAD_PATH_$index"
-    file=${!var_name}
+index=1
+while [ "$index" -le 100 ]; do
+    file_variable="FILE_UPLOAD_PATH_$index"
+    folder_variable="FILE_AZURE_FOLDER_$index"
+    file=${!file_variable}
+    folder=${!folder_variable}
 
     if [ -z "$file" ]; then
         index=$((index + 1))
         continue
     fi
 
-    uploadFile "$file"
+    uploadFile "$file" "$folder_name"
 
     index=$((index + 1))
 done

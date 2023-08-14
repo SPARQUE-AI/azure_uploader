@@ -1,4 +1,3 @@
-$APP_FOLDER = "$HOME\azure_uploader"
 $os_name = Get-CimInstance Win32_OperatingSystem | Select-Object -ExpandProperty Caption
 
 # Install dependencies
@@ -22,7 +21,7 @@ if (-not (Test-Path ~\AppData\Local\Programs\AZCopy\azcopy.exe)) {
 }
 
 # Pull in variables from .env file in the same folder as this script
-. "$APP_FOLDER\.env.ps1"
+. ".\.env.ps1"
 
 # Validate variables
 if (-not $SAS_URL) {
@@ -32,31 +31,37 @@ if (-not $SAS_URL) {
 
 function UploadFile {
     param (
-        [string]$filePath
+        [Parameter(Mandatory=$true)]
+        [string]$filePath,
+
+        [Parameter(Mandatory=$false)]
+        [string]$folderName
     )
-    
+
     Write-Output "Uploading file to Azure from $filePath"
-    & "$env:USERPROFILE\AppData\Local\Programs\AZCopy\azcopy.exe" cp "$filePath" "$SAS_URL"
+
+    $destination = if (-not [string]::IsNullOrEmpty($folderName)) {
+        "$env:SAS_URL/$folderName"
+    } else {
+        "$env:SAS_URL"
+    }
+
+    Write-Output "Destination: $destination"
+    azcopy cp $filePath $destination
 }
 
-# Handle the base "FILE" variable if it exists
-if ($FILE_UPLOAD_PATH) {
-    UploadFile -filePath $FILE_UPLOAD_PATH
-}
+for ($index=1; $index -le 100; $index++) {
+    $fileVariableName = "FILE_UPLOAD_PATH_$index"
+    $folderVariableName = "FILE_AZURE_FOLDER_$index"
 
-$index = 0
-while ($index -le 10) {
-    $var_name = "FILE_UPLOAD_PATH_$index"
-    $file = Get-Variable -Name $var_name -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Value
+    $file = Get-Variable -Name $fileVariableName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Value
+    $folder = Get-Variable -Name $folderVariableName -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Value
 
     if (-not $file) {
-        $index++
         continue
     }
 
-    UploadFile -filePath $file
-
-    $index++
+    UploadFile -filePath $file -folderName $folder
 }
 
 Write-Output "File upload(s) complete"
