@@ -48,9 +48,9 @@ function UploadFile {
     $fileName = [System.IO.Path]::GetFileName($filePath)
 
     if (-not [string]::IsNullOrEmpty($folderName)) {
-        $destination = "$env:SAS_URL/$folderName/$fileName`?$env:SAS_TOKEN"
+        $destination = "$env:SAS_URL/$folderName/$fileName?$env:SAS_TOKEN"
     } else {
-        $destination = "$env:SAS_URL/$fileName`?$env:SAS_TOKEN"
+        $destination = "$env:SAS_URL/$fileName?$env:SAS_TOKEN"
     }
 
     Write-Output "Destination: $destination"
