@@ -16,7 +16,7 @@ Invoke-WebRequest -Uri "https://raw.githubusercontent.com/chishingchang-sparquea
 Invoke-WebRequest -Uri "https://raw.githubusercontent.com/chishingchang-sparqueai/azure_uploader/main/.env.ps1.example" -OutFile ".env.ps1"
 
 if (-not (Test-Path .\env.ps1)) {
-    Move-Item -Path .\env.example -Destination .\env.ps1
+    Move-Item -Path .\env.ps1.example -Destination .\env.ps1
 } else {
     Write-Output "env.ps1 already exists. Not overwriting."
 }
